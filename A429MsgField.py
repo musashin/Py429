@@ -46,7 +46,7 @@ class A429MsgField(object):
                                                   (2**self.size).__str__(),\
                                                   '{value}')
         else:
-            A429word = bitarray(32)
+            A429word = bitarray.bitarray(32)
             A429word = bitarray.bitarray(bin(value<<(self.lsb-1))[2:])
             return A429word
     
