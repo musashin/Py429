@@ -5,11 +5,10 @@ Created on 2 mai 2013
 '''
 
 import A429Exception
-import bitarray
 
 class A429MsgField(object):
     '''
-    This classes represents a an A429 message.
+    This classes represents a an A429 message field.
     As such it is characterized by the position and size of the field, indicated by:
         - Field LSB (note that the LSB is indexed 1, to match common data dictionaries definitions)
         - Field Size in bits
@@ -27,6 +26,7 @@ class A429MsgField(object):
         self.name = name
         self.parent_label = parent_label
         self.parent_sdi = parent_sdi
+        self.data = None
         
     def unpack(self,A429word):
             pass
@@ -37,7 +37,7 @@ class A429MsgField(object):
         the value packed at location corresponding to the message definition
         
         Warning: a A429MsgRangeError is raised if the field is not
-        large enougth to store the value.
+        large enough to store the value.
         '''
         if(abs(value)>(2**self.size)):
             raise A429Exception.A429MsgRangeError(self.parent_label,\
@@ -46,7 +46,7 @@ class A429MsgField(object):
                                                   (2**self.size).__str__(),\
                                                   '{value}')
         else:
-            A429word = bitarray.bitarray(32)
-            A429word = bitarray.bitarray(bin(value<<(self.lsb-1))[2:])
-            return A429word
+            self.data = value<<self.lsb
+            
+            return self.data
     
