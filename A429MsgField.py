@@ -45,8 +45,14 @@ class A429MsgField(object):
                                                   self.name,\
                                                   (2**self.size).__str__(),\
                                                   '{value}')
+        elif value<0:
+            raise A429Exception.A429MsgRangeError(self.parent_label,\
+                                                  self.parent_sdi,\
+                                                  self.name,\
+                                                  (2**self.size).__str__(),\
+                                                  '{value}')
         else:
-            self.data = value<<self.lsb
+            self.data = value<<(self.lsb-1)
             
             return self.data
     
