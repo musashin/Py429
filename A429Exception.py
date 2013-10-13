@@ -29,7 +29,7 @@ class A429MsgStructureError(A429Exception):
         SDI    -- SDI of the message that raises the error
         msg    -- explanation of the error
     '''
-    def __init__(self,label,sdi,msg):
+    def __init__(self,msg,label="unknown",sdi="unknown"):
         A429Exception.__init__(self, label, sdi)
         self.msg = msg
     def __str__(self):
@@ -47,7 +47,7 @@ class A429MsgRangeError(A429Exception):
         current_value     -- current_value
         
     '''
-    def __init__(self,label,sdi,field_name,accepted_value,current_value):
+    def __init__(self,field_name,accepted_value,current_value,label="unkown",sdi="unkown"):
         A429Exception.__init__(self, label, sdi)
         self.field_name = field_name
         self.accepted_value = accepted_value

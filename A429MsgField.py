@@ -17,15 +17,21 @@ class A429MsgField(object):
     with a 32 bit value) and unpack
         
     '''
-    def __init__(self,lsb,size,name,parent_label,parent_sdi):
+    def __init__(self,lsb,size,name):
         '''
         Constructor
         '''
         self.lsb = lsb
+        
+        if lsb<1:
+            raise A429Exception.A429MsgStructureError("LSB cannot be lower than 1")
+            
         self.size = size
+        
+        if (lsb+size)>33:
+            raise A429Exception.A429MsgStructureError("Field cannot exceed bit 32")
+        
         self.name = name
-        self.parent_label = parent_label
-        self.parent_sdi = parent_sdi
         self.data = None
         
     def unpack(self,A429word):
@@ -39,17 +45,13 @@ class A429MsgField(object):
         Warning: a A429MsgRangeError is raised if the field is not
         large enough to store the value.
         '''
-        if(abs(value)>(2**self.size)):
-            raise A429Exception.A429MsgRangeError(self.parent_label,\
-                                                  self.parent_sdi,\
-                                                  self.name,\
-                                                  (2**self.size).__str__(),\
+        if(abs(value)>((2**self.size)-1)):
+            raise A429Exception.A429MsgRangeError(self.name,\
+                                                  ((2**self.size)-1).__str__(),\
                                                   '{value}')
         elif value<0:
-            raise A429Exception.A429MsgRangeError(self.parent_label,\
-                                                  self.parent_sdi,\
-                                                  self.name,\
-                                                  (2**self.size).__str__(),\
+            raise A429Exception.A429MsgRangeError(self.name,\
+                                                  "0",\
                                                   '{value}')
         else:
             self.data = value<<(self.lsb-1)
