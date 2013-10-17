@@ -35,16 +35,26 @@ class A429MsgField(object):
         self.data = None
         
     def unpack(self,A429word):
-            pass
+        """ return the value given a 32 bit ARINC 429 message value """ 
+        if (A429word<0):
+            raise A429Exception.A429MsgRangeError(self.name,\
+                                                  0,\
+                                                  '{A429word}')
+        elif (A429word>0xFFFFFFFF): 
+            raise A429Exception.A429MsgRangeError(self.name,\
+                                                  0xFFFFFFFF,\
+                                                  '{A429word}')
+        else:
+            return A429word>>(self.lsb-1)                                                                        
         
     def pack(self,value):
-        '''
+        """
         Take an integer value and return a bit array representing
         the value packed at location corresponding to the message definition
         
         Warning: a A429MsgRangeError is raised if the field is not
         large enough to store the value.
-        '''
+        """
         if(abs(value)>((2**self.size)-1)):
             raise A429Exception.A429MsgRangeError(self.name,\
                                                   ((2**self.size)-1).__str__(),\

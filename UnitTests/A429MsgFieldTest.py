@@ -36,7 +36,7 @@ class PackingBaseFieldNormal(unittest.TestCase):
         packed = field.pack(0x1)
         self.assertEqual(packed,0x1, "Cannot pack LSB")
     
-    def testFewReferenceValues(self):
+    def testPackingFewReferenceValues(self):
         """ Test Packing for a few reference values """
         refValues = ((3,4),(11,5),(13,9),(21,8),(30,2),(4,16))
         for lsb,size in refValues:
@@ -56,6 +56,18 @@ class PackingRangeLimits(unittest.TestCase):
         """ A429MsgField Should fail when the data to pack is lower than zero"""
         field = A429MsgField.A429MsgField(5,2,"Test Field")
         self.assertRaises(A429Exception.A429MsgRangeError, field.pack, -0.001)
+        
+class UnPackingRangeLimits(unittest.TestCase):
+    """ Verify Range Limiting Exceptions """
+    def testRangeExceededMax(self):
+        """ A429MsgField Should fail when the data to unpack is larger than a 32 bit word"""
+        field = A429MsgField.A429MsgField(5,2,"Test Field")
+        self.assertRaises(A429Exception.A429MsgRangeError, field.unpack, 0x1FFFFFFFF)
+        
+    def testRangeExceededMin(self):
+        """ A429MsgField Should fail when the data to pack is lower than zero"""
+        field = A429MsgField.A429MsgField(5,2,"Test Field")
+        self.assertRaises(A429Exception.A429MsgRangeError, field.unpack, -0.001)
   
 class StructureExceptions(unittest.TestCase):
     """ Verify Field Structure Exceptions"""
