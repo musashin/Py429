@@ -44,6 +44,15 @@ class PackingBaseFieldNormal(unittest.TestCase):
             for movingBit in range(0,(size-1)):
                 packed = field.pack(1<<movingBit)
                 self.assertEqual(packed,1<<(movingBit+lsb-1))
+                
+    def testUnPackingFewReferenceValues(self):
+        """ Test unpacking for a few reference values """
+        refValues = ((3,4),(11,5),(13,9),(21,8),(30,2),(4,16))
+        for lsb,size in refValues:
+            field = A429MsgField.A429MsgField(lsb,size,"test field")
+            for movingBit in range(0,(size-1)):
+                unpacked = field.unpack(1<<(movingBit + lsb -1))
+                self.assertEqual(unpacked,1<<(movingBit))
     
 class PackingRangeLimits(unittest.TestCase):
     """ Verify Range Limiting Exceptions """
