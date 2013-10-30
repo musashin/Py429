@@ -14,13 +14,12 @@ class testExceptions(unittest.TestCase):
         """
         Confirm that an integer or floating point value is not accepted a labeValue
         """
-        self.assertRaises(TypeError,A429LabelField.LabelField,5)
-        self.assertRaises(TypeError,A429LabelField.LabelField,8.5)
+        self.assertRaises(A429Exception.A429Exception,A429LabelField.LabelField,5)
+        self.assertRaises(A429Exception.A429Exception,A429LabelField.LabelField,8.5)
         
     def testNonOctal(self):
         self.assertRaises(A429Exception.A429MsgRangeError,A429LabelField.LabelField,'378')
-        
-            
+              
     def testLabelUpperLimit(self):
         """
         Confirm that value above 377 are rejected

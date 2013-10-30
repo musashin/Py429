@@ -23,26 +23,24 @@ class LabelField(A429MsgField.A429MsgField):
         value as an integer.
         '''
         A429MsgField.A429MsgField.__init__(self, 1, 8, 'label')
-        
+        self.setData(label)
+     
+    def setData(self,label): 
+        ''' set the label property '''
+        if type(label)!=type(str()):
+            raise A429Exception.A429Exception('Label should be given as strings')
         try:
-            labelInt = int(label,8)
+            self._label  = int(label,8)
         except ValueError:
             raise A429Exception.A429MsgRangeError(self.name,\
                                                   0377,\
-                                                  label) 
-          
-        try:      
-            self.label = int('{:08b}'.format(labelInt)[::-1], 2) #let's reverse the bit
-        except ValueError:
-            raise A429Exception.A429MsgRangeError(self.name,\
-                                                  0377,\
-                                                  label) 
-        
+                                                  self._label) 
     def pack(self):
         '''
         Return the 32 bits word corresponding to an A429 message with the label data (all other bits at zero)
-        '''
-        return A429MsgField.A429MsgField.pack(self,self.label)
+        '''   
+        reverted = int('{:08b}'.format(self._label)[::-1], 2) #let's reverse the bit
+        return A429MsgField.A429MsgField.pack(self,reverted)
         
     def unpack(self,A429word):
         """ return the value given a 32 bit ARINC 429 message value """ 
