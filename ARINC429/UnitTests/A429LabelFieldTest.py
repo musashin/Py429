@@ -14,35 +14,50 @@ class testExceptions(unittest.TestCase):
         """
         Confirm that an integer or floating point value is not accepted a labeValue
         """
-        self.assertRaises(A429Exception.A429Exception,A429LabelField.LabelField,5)
-        self.assertRaises(A429Exception.A429Exception,A429LabelField.LabelField,8.5)
+        label = A429LabelField.LabelField()
+        self.assertRaises(A429Exception.A429Exception,label.setData,5)
+        self.assertRaises(A429Exception.A429Exception,label.setData,8.5)
         
     def testNonOctal(self):
-        self.assertRaises(A429Exception.A429MsgRangeError,A429LabelField.LabelField,'378')
+        label = A429LabelField.LabelField()
+        self.assertRaises(A429Exception.A429MsgRangeError,label.setData,'378')
               
     def testLabelUpperLimit(self):
         """
         Confirm that value above 377 are rejected
         """
-        self.assertRaises(A429Exception.A429MsgRangeError,A429LabelField.LabelField,'378')
+        label = A429LabelField.LabelField()
+        self.assertRaises(A429Exception.A429MsgRangeError,label.setData,'378')
         
     def testLabelLowerLimit(self):
         """
         Confirm that value above 377 are rejected
         """
-        self.assertRaises(A429Exception.A429MsgRangeError,A429LabelField.LabelField,'-1')
+        label = A429LabelField.LabelField()
+        self.assertRaises(A429Exception.A429MsgRangeError,label.setData,'-1')
     
 class testLabelCreations(unittest.TestCase):
     """Verify that label fields are created properly"""
-
-    def testLabelGeneration(self):
+    refValues = ((0,0),(41,0b10000100),(107,0b11100010),(206,0b01100001),(350,0b00010111),(377,0xFF))
+    
+    def testLabelPacking(self):
         """
-        packed different possible labels and confirm they are packed properly
+        pack different labels and confirm they are coded properly
         """
-        refValues = ((0,0),(41,0b10000100),(107,0b11100010),(206,0b01100001),(350,0b00010111),(377,0xFF))
-        for label,packed in refValues:
-            labelField = A429LabelField.LabelField(str(label))
+        for label,packed in self.refValues:
+            labelField = A429LabelField.LabelField()
+            labelField.setData(str(label))
             self.assertEqual(labelField.pack(),packed, "Label Not Packed Properly")
+            
+    def testLabelUnpacking(self):
+        """
+        unpack different labels and confirm they are decoded properly
+        """
+        pass
+        for label,packed in self.refValues:
+            labelField = A429LabelField.LabelField()
+            labelField.unpack(packed)
+            self.assertEqual(labelField.getData(),int(str(label),8), "Label Not Unpacked Properly")
             
 
 
