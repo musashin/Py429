@@ -36,6 +36,24 @@ class testExceptions(unittest.TestCase):
         label = A429LabelField.LabelField()
         self.assertRaises(A429Exception.A429MsgRangeError,label.setData,'-1')
     
+class testNoData(unittest.TestCase):
+    '''
+    Test situation where label is accessed before having been set
+    '''
+    def testGetDataNoData(self):
+        '''
+        Call get data when the label was not set
+        '''
+        label = A429LabelField.LabelField()
+        self.assertRaises(A429Exception.A429NoData,label.getData)
+    
+    def testPackNoData(self):
+        '''
+        Call pack when the label was not set
+        '''
+        label = A429LabelField.LabelField()
+        self.assertRaises(A429Exception.A429NoData,label.pack)
+    
 class testLabelCreations(unittest.TestCase):
     """Verify that label fields are created properly"""
     refValues = ((0,0),(41,0b10000100),(107,0b11100010),(206,0b01100001),(350,0b00010111),(377,0xFF))
@@ -59,7 +77,5 @@ class testLabelCreations(unittest.TestCase):
             labelField.unpack(packed)
             self.assertEqual(labelField.getData(),int(str(label),8), "Label Not Unpacked Properly")
             
-
-
 if __name__ == "__main__":
     unittest.main()

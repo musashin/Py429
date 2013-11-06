@@ -21,7 +21,20 @@ class A429Exception(Exception):
                 + "]  Label-" + self.label + "-" \
                 + "  SDI-" + self.sdi + "-] "\
                 + self.message+"\n"
-            
+        
+
+class A429NoData(A429Exception):
+    '''
+    Exception raised whenever data is used from an A429 message
+    field that was not set
+    '''
+    def __init__(self,fieldName,label="unknown",sdi="unknown"):
+        A429Exception.__init__(self, label, sdi)
+        self.fieldName = fieldName
+    def __str__(self):
+        error = super(A429MsgStructureError,self).__str__()
+        return error + " : no data in field" + self.fieldName
+       
 class A429MsgStructureError(A429Exception):
     '''
     Exception raised whenever an A429 structure is not coherent (ex: overlapping field)

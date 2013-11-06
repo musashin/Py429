@@ -20,7 +20,7 @@ class A429MsgField(object):
     '''
 
     def __repr__(self):
-        return '<%s.%s object at 0x%x, Field %s at bit %x of size %x>'%(self.__module__,self.__class__.__name__,id(self),self.name,self.lsb,self.size)
+        return '<%s.%s object at 0x%x, Field \'%s\' at bit %x of size %x>'%(self.__module__,self.__class__.__name__,id(self),self.name,self.lsb,self.size)
       
     def __init__(self,lsb,size,name):
         '''
