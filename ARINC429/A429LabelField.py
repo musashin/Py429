@@ -15,6 +15,12 @@ class LabelField(A429MsgField.A429MsgField):
     LabelField is more specifically dedicated to managing messages label,
     which are located in the bits 1 to 8 with LSB at bit 8.
     '''
+    
+    def __repr__(self):
+        if hasattr(self, '_label'):
+            return '<%s.%s object at 0x%x, Label %s>'%(self.__module__,self.__class__.__name__,id(self),oct(self._label))
+        else:
+            return '<%s.%s object at 0x%x, from %s>'%(self.__module__,self.__class__.__name__,id(self))
 
     def __init__(self):
         '''

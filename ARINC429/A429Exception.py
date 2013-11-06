@@ -53,6 +53,7 @@ class A429MsgRangeError(A429Exception):
         self.field_name = field_name
         self.accepted_value = str(accepted_value)
         self.current_value = str(current_value)
+        
     def __str__(self):
         error = super(A429MsgRangeError,self).__str__()
         range_msg = "value " + self.current_value + " exceeds " + self.accepted_value

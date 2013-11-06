@@ -18,6 +18,10 @@ class A429MsgField(object):
     with a 32 bit value) and unpack
         
     '''
+
+    def __repr__(self):
+        return '<%s.%s object at 0x%x, Field %s at bit %x of size %x>'%(self.__module__,self.__class__.__name__,id(self),self.name,self.lsb,self.size)
+      
     def __init__(self,lsb,size,name):
         '''
         Constructor
@@ -33,7 +37,6 @@ class A429MsgField(object):
             raise A429Exception.A429MsgStructureError("Field cannot exceed bit 32")
         
         self.name = name
-        self.data = None
         
     def unpack(self,A429word):
         """ return the value given a 32 bit ARINC 429 message value """ 
