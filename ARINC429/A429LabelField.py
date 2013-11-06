@@ -7,7 +7,6 @@ Created on 2013-10-17
 import A429MsgField
 import A429Exception
 
-
 class LabelField(object):
     '''
     This subclass of A429MsgField is part of an ensemble of classes
