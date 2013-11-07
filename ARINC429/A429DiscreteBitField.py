@@ -38,3 +38,32 @@ class DiscreteBitField(object):
         self._meaningWhenSet = meaningWhenSet
         self._meaningWhenNotSet = meaningWhenNotSet
         
+    def setData(self,bitValue): 
+        ''' set the bit value
+        This function expect the bit value passed as a boolean
+        '''
+        if type(bitValue)!=type(bool()):
+            raise A429Exception.A429Exception('Bit are expected as bool')
+        else:
+            self._value  = bitValue
+            
+    def getData(self): 
+        ''' get the bit value '''
+        if self._value is None:
+            raise A429Exception.A429NoData(self._field.name)
+        else:
+            return self._value
+        
+    def pack(self):
+        '''
+        Return the 32 bits word corresponding to an A429 message with the bit data (all other bits at zero)
+        '''   
+        if self._value is None:
+            raise A429Exception.A429NoData(self._field.name)
+        else:
+            return self._field.pack(int(self._value))
+        
+    def unpack(self,A429word):
+        """ set the bit value given a 32 bit ARINC 429 message value """ 
+        self._value = bool(self._field.unpack(A429word))
+        

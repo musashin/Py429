@@ -71,6 +71,6 @@ class LabelField(object):
             return self._field.pack(reverted)
         
     def unpack(self,A429word):
-        """ return the value given a 32 bit ARINC 429 message value """ 
+        """ set the label given a 32 bit ARINC 429 message value """ 
         labelrev= self._field.unpack(A429word)
         self._label= int('{:08b}'.format(labelrev)[::-1], 2)

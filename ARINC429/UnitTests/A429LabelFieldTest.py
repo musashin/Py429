@@ -8,7 +8,7 @@ import A429LabelField
 import A429Exception
 
 
-class testExceptions(unittest.TestCase):
+class testValueExceptions(unittest.TestCase):
 
     def testLabelFormat(self):
         """
@@ -71,7 +71,6 @@ class testLabelCreations(unittest.TestCase):
         """
         unpack different labels and confirm they are decoded properly
         """
-        pass
         for label,packed in self.refValues:
             labelField = A429LabelField.LabelField()
             labelField.unpack(packed)
