@@ -37,11 +37,12 @@ class A429MsgField(object):
             raise A429Exception.A429MsgStructureError("Field cannot exceed bit 32")
         
         self.name = name
-        self._mask=(2**(self.size-1))<<(self.lsb-1)
-        print 'mask is' + bin(self._mask)
+        self._mask=((2**self.size)-1)<<(self.lsb-1)
+        
         
     def unpack(self,A429word):
         """ return the value given a 32 bit ARINC 429 message value """ 
+        
         if (A429word<0):
             raise A429Exception.A429MsgRangeError(self.name,\
                                                   0,\
@@ -51,7 +52,7 @@ class A429MsgField(object):
                                                   0xFFFFFFFF,\
                                                   A429word)
         else:
-            return (A429word>>(self.lsb-1))& self._mask                                                                      
+            return ((A429word& self._mask)>>(self.lsb-1))                                                                     
         
     def pack(self,value):
         """
