@@ -9,7 +9,7 @@ import A429Exception
 
 class LabelField(object):
     '''
-    This subclass of A429MsgField is part of an ensemble of classes
+    This class is part of an ensemble of classes
     that can be used as an utility for packing and unpacking A429 messages.
     LabelField is more specifically dedicated to managing messages label,
     which are located in the bits 1 to 8 with LSB at bit 8.
