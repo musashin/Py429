@@ -23,14 +23,21 @@ class ParityBit(object):
     def __init__(self,parityConvention='odd'):
 
         '''
-        Simply declare an 1 bit field at lsb 31, and keep
+        Simply declare an 1 bit field at lsb 32, and keep
         track of the parity convention
         '''
-        self._field = A429MsgField.A429MsgField( 31, 1, 'parity')
+        self._field = A429MsgField.A429MsgField( 32, 1, 'parity')
+        
+        if type(parityConvention)!=type(str()):
+            raise A429Exception.A429Exception("Parity Convention {} is not handled".format(parityConvention))
+        elif parityConvention is not 'odd' and parityConvention is not'even':
+            raise A429Exception.A429Exception("Parity Convention {} is not handled".format(parityConvention))
+       
         self._parityConvention = parityConvention
+        self._value = None
         
     def setData(self,messageValue): 
-        ''' set the parity bit value
+        ''' set the parity bit value,as a function of the parity convention
         This function expect the bit value passed as a integer
         '''
         if type(messageValue)!=type(int()):
@@ -48,7 +55,7 @@ class ParityBit(object):
                     self._value = 0
                 else:
                     self._value = 1
-    
+
     def getData(self): 
         ''' get the bit value '''
         if self._value is None:
