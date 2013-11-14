@@ -8,7 +8,7 @@ import A429LabelField
 import A429ParityBit
 import A429Exception
 
-class ExceptionRaisin(unittest.TestCase):
+class ExceptionRaise(unittest.TestCase):
 
     def testInvalidConventions(self):
         """ A429ParityBit should fail for parity convention other than odd or even"""
@@ -78,11 +78,7 @@ class testParity(unittest.TestCase):
             parityBitOdd.setData(case['word'])
             self.assertEqual(parityBitOdd.pack(),1<<31 if case['parity']=='even' else 0, "Parity Not Calculated Properly")
             parityBitEven.setData(case['word'])
-            self.assertEqual(parityBitEven.pack(),0 if case['parity']=='even' else 1<<31, "Parity Not Calculated Properly")
-            
-        
-    
-        
+            self.assertEqual(parityBitEven.pack(),0 if case['parity']=='even' else 1<<31, "Parity Not Calculated Properly")      
         
 if __name__ == "__main__":
    

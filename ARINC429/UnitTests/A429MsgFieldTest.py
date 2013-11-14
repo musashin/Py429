@@ -87,6 +87,7 @@ class StructureExceptions(unittest.TestCase):
     def testTooLargeField(self):
         """ MSB shall never be greater then 32 """
         self.assertRaises(A429Exception.A429MsgStructureError, A429MsgField.A429MsgField,1,33,"Test Field")
-
+         
+               
 if __name__ == "__main__":
     unittest.main()

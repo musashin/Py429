@@ -75,6 +75,6 @@ class testLabelCreations(unittest.TestCase):
             labelField = A429LabelField.LabelField()
             labelField.unpack(packed)
             self.assertEqual(labelField.getData(),int(str(label),8), "Label Not Unpacked Properly")
-            
+
 if __name__ == "__main__":
     unittest.main()

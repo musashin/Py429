@@ -91,8 +91,6 @@ class testBitPackandUnpack(unittest.TestCase):
             for j in range(1, 32):
                 bit.unpack(1<<(j-1))
                 self.assertEqual(bit.getData(),i==j, "Label Not Un-Packed Properly")
-       
-
 
 if __name__ == "__main__":
     unittest.main()
