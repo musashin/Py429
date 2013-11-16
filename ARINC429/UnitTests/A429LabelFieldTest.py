@@ -9,6 +9,12 @@ import A429Exception
 
 
 class testValueExceptions(unittest.TestCase):
+    
+    def testCanRepresentItself(self):
+        try:
+            A429LabelField.LabelField()
+        except Exception:
+            self.fail("LabelField cannot represent itself")
 
     def testLabelFormat(self):
         """

@@ -12,6 +12,16 @@ class testValueExceptions(unittest.TestCase):
     '''
     Test protections against data that does not correspond to the field type
     '''
+    
+    def testCanRepresentItself(self):
+        try:
+            A429DiscreteBitField.DiscreteBitField(bitIndex=5,
+                                                      bitName='testBit',
+                                                      meaningWhenSet='happy',
+                                                      meaningWhenNotSet='unhappy')
+        except Exception:
+            self.fail("LabelField cannot represent itself")
+
 
     def testInvalidDataType(self):
         """

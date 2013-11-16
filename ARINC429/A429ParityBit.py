@@ -7,7 +7,7 @@ Created on 2013-11-11
 import A429MsgField
 import A429Exception
 
-class ParityBit(object):
+class ParityBit(A429MsgField.A429MsgField):
     '''
     This class is part of an ensemble of classes
     that can be used as an utility for packing and unpacking A429 messages.
@@ -18,7 +18,7 @@ class ParityBit(object):
         return '<%s.%s object at 0x%x [%s]>'%(self.__module__,
                                               self.__class__.__name__,
                                               id(self),
-                                              repr(self._field))
+                                              repr(A429MsgField.A429MsgField))
 
     def __init__(self,parityConvention='odd'):
 
@@ -26,7 +26,7 @@ class ParityBit(object):
         Simply declare an 1 bit field at lsb 32, and keep
         track of the parity convention
         '''
-        self._field = A429MsgField.A429MsgField( 32, 1, 'parity')
+        A429MsgField.A429MsgField.__init__(self, 32, 1, 'parity')
         
         if type(parityConvention)!=type(str()):
             raise A429Exception.A429Exception("Parity Convention {} is not handled".format(parityConvention))
@@ -59,7 +59,7 @@ class ParityBit(object):
     def getData(self): 
         ''' get the bit value '''
         if self._value is None:
-            raise A429Exception.A429NoData(self._field.name)
+            raise A429Exception.A429NoData(self.name)
         else:
             return self._value
                     
@@ -68,11 +68,11 @@ class ParityBit(object):
         Return the 32 bits word corresponding to an A429 message with the bit data (all other bits at zero)
         '''   
         if self._value is None:
-            raise A429Exception.A429NoData(self._field.name)
+            raise A429Exception.A429NoData(self.name)
         else:
-            return self._field.pack(int(self._value))   
+            return A429MsgField.A429MsgField.pack(self,int(self._value))   
     
     def unpack(self,A429word):
         """ set the bit value given a 32 bit ARINC 429 message value """ 
-        self._value = bool(self._field.unpack(A429word)) 
+        self._value = bool(A429MsgField.A429MsgField.unpack(self,A429word)) 
         

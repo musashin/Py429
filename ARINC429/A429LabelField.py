@@ -7,7 +7,7 @@ Created on 2013-10-17
 import A429MsgField
 import A429Exception
 
-class LabelField(object):
+class LabelField(A429MsgField.A429MsgField):
     '''
     This class is part of an ensemble of classes
     that can be used as an utility for packing and unpacking A429 messages.
@@ -21,18 +21,18 @@ class LabelField(object):
                                                             self.__class__.__name__,
                                                             id(self),
                                                             oct(self._label),
-                                                            repr(self._field))
+                                                            repr(A429MsgField.A429MsgField))
         else:
             return '<%s.%s object at 0x%x [%s]>'%(self.__module__,
                                                   self.__class__.__name__,
                                                   id(self),
-                                                  repr(self._field))
+                                                  repr(A429MsgField.A429MsgField))
 
     def __init__(self):
         '''
         Simply declare an 8 bits field at lsb 1
         '''
-        self._field = A429MsgField.A429MsgField( 1, 8, 'label')
+        A429MsgField.A429MsgField.__init__(self,1, 8, 'label')
         self._label = None
      
     def setData(self,label): 
@@ -46,17 +46,17 @@ class LabelField(object):
         try:
             self._label  = int(label,8)
         except ValueError:
-            raise A429Exception.A429MsgRangeError(self._field.name,\
+            raise A429Exception.A429MsgRangeError(self.name,\
                                                   0377,\
                                                   label) 
         if(self._label<0):
-            raise A429Exception.A429MsgRangeError(self._field.name,\
+            raise A429Exception.A429MsgRangeError(self.name,\
                                                   0,\
                                                   label) 
     def getData(self): 
         ''' get the label property '''
         if self._label is None:
-            raise A429Exception.A429NoData(self._field.name)
+            raise A429Exception.A429NoData(self.name)
         else:
             return self._label
          
@@ -65,12 +65,12 @@ class LabelField(object):
         Return the 32 bits word corresponding to an A429 message with the label data (all other bits at zero)
         '''   
         if self._label is None:
-            raise A429Exception.A429NoData(self._field.name)
+            raise A429Exception.A429NoData(self.name)
         else:
             reverted = int('{:08b}'.format(self._label)[::-1], 2) #let's reverse the bit
-            return self._field.pack(reverted)
+            return A429MsgField.A429MsgField.pack(self,reverted)
         
     def unpack(self,A429word):
         """ set the label given a 32 bit ARINC 429 message value """ 
-        labelrev= self._field.unpack(A429word)
+        labelrev= A429MsgField.A429MsgField.unpack(self,A429word)
         self._label= int('{:08b}'.format(labelrev)[::-1], 2)

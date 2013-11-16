@@ -10,6 +10,12 @@ import A429Exception
 
 class ExceptionRaise(unittest.TestCase):
 
+    def testCanRepresentItself(self):
+        try:
+            A429ParityBit.ParityBit()
+        except Exception:
+            self.fail("LabelField cannot represent itself")
+
     def testInvalidConventions(self):
         """ A429ParityBit should fail for parity convention other than odd or even"""
         self.assertRaises(A429Exception.A429Exception, A429ParityBit.ParityBit, "test")

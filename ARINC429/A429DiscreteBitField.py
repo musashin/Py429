@@ -7,7 +7,7 @@ Created on 2013-11-05
 import A429MsgField
 import A429Exception
 
-class DiscreteBitField(object):
+class DiscreteBitField(A429MsgField.A429MsgField):
     '''
     This subclass of A429MsgField is part of an ensemble of classes
     that can be used as an utility for packing and unpacking A429 messages.
@@ -21,19 +21,19 @@ class DiscreteBitField(object):
                                                             self.__class__.__name__,
                                                             id(self),
                                                             str(self._value),
-                                                            repr(self._field))
+                                                            repr(A429MsgField.A429MsgField))
         else:
             return '<%s.%s object at 0x%x [%s]>'%(self.__module__,
                                                   self.__class__.__name__,
                                                   id(self),
-                                                  repr(self._field))
+                                                  repr(A429MsgField.A429MsgField))
 
     def __init__(self,bitIndex,bitName,meaningWhenSet,meaningWhenNotSet):
         '''
         Simply declare a 1 bit field at the specified position
         Note: LSB index is 1
         '''
-        self._field = A429MsgField.A429MsgField(bitIndex, 1,bitName)
+        A429MsgField.A429MsgField.__init__(self,bitIndex, 1,bitName)
         self._value = None
         self._meaningWhenSet = meaningWhenSet
         self._meaningWhenNotSet = meaningWhenNotSet
@@ -50,7 +50,7 @@ class DiscreteBitField(object):
     def getData(self): 
         ''' get the bit value '''
         if self._value is None:
-            raise A429Exception.A429NoData(self._field.name)
+            raise A429Exception.A429NoData(self.name)
         else:
             return self._value
         
@@ -59,11 +59,11 @@ class DiscreteBitField(object):
         Return the 32 bits word corresponding to an A429 message with the bit data (all other bits at zero)
         '''   
         if self._value is None:
-            raise A429Exception.A429NoData(self._field.name)
+            raise A429Exception.A429NoData(self.name)
         else:
-            return self._field.pack(int(self._value))
+            return A429MsgField.A429MsgField.pack(self,int(self._value))
         
     def unpack(self,A429word):
         """ set the bit value given a 32 bit ARINC 429 message value """ 
-        self._value = bool(self._field.unpack(A429word))
+        self._value = bool(A429MsgField.A429MsgField.unpack(self,A429word))
         
