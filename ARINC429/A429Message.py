@@ -24,10 +24,86 @@ class Message(object):
         self.addField(A429LabelField.LabelField())
         self.addField(A429ParityBit.ParityBit(parity))
         
-    def setLabel(self,label):
+    def getFieldIndex(self,fieldName):
+        '''
+        Given a field name, this function return the field index
+        (field are ordered by lsb ascending)
+        If more that one label share the same name, an exception is returned
+        '''
+        pass
         
+    def setLabel(self,label):
+        '''
+        Set the label corresponding to this message
+        '''
         for field in self._fields:
-            
+            pass
+        
+    def changeParityConvention(self,parity):
+        '''
+        Change the parity convention for the label
+        'odd' is used by default at the message creation
+        Parity need to be a string of value 'odd' or 'even'
+        '''
+        pass
+    
+    def validateMessage(self):
+        '''
+        Validate this message is valid, return
+        True if this is the case, False otherwise:
+        - it does not overlap with any existing field)
+        - its name does not correspond to an existing field
+        - there is at least one 'label' field and one 'parity' field
+        - TODO: more for BDC label
+        '''
+        pass
+    
+    def canThisFieldBeAdded(self,field):
+        '''
+        return True if the field passed as argument
+        can be added :
+        - it does not overlap with any existing field)
+        - its name does not correspond to an existing field
+        '''
+        pass
+    
+    def clearFields(self):
+        '''
+        clear all fields values
+        '''
+        pass
+    
+    def areAllFieldValuesSet(self):
+        '''
+        Return true if all label in the field got their values set
+        '''
+        pass
+    
+    def pack(self):
+        '''
+        Return the 32 bit word that correspond to this message
+        with the values currently set
+        '''
+        pass
+    
+    def unpack(self,word):
+        '''
+        Given a 32 bit word, set all the fields values
+        '''
+        pass
+    
+    def setFieldValueByName(self,fieldName,value):
+        '''
+        Set the field value given its name 
+        '''
+        pass
+    
+    def setFieldValueByIndex(self,fieldIndex,value):
+        '''
+        Set the field value given its index (field are ordered
+        by lsb ascending)
+        '''
+        pass
         
     def addField(self,field):
         '''
