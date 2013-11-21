@@ -6,6 +6,7 @@ Created on 2013-11-16
 
 import A429LabelField
 import A429ParityBit
+import A429Exception
 
 class Message(object):
     '''
@@ -15,37 +16,51 @@ class Message(object):
     pack the data
     '''
 
-    def __init__(self,parity='odd'):
+    def __init__(self,name,parity='odd'):
         '''
         Create an A429 Message by simply adding a label and a parity bit
         Note that the parity is odd by default but can be modified as necessary
         '''
+        self._name = name
         self._fields = list()
         self.addField(A429LabelField.LabelField())
         self.addField(A429ParityBit.ParityBit(parity))
-        
+         
     def getFieldIndex(self,fieldName):
         '''
         Given a field name, this function return the field index
         (field are ordered by lsb ascending)
         If more that one label share the same name, an exception is returned
         '''
-        pass
+        try: 
+            return [index for index , field in enumerate(self._fields) if field.name == fieldName][0]
+        except:
+            return None
+       
         
     def setLabel(self,label):
         '''
         Set the label corresponding to this message
+        TODO: test
         '''
-        for field in self._fields:
-            pass
+        try:
+            labelField = [index for index , field in enumerate(self._fields) if field.name == 'label'][0]
+            labelField.setData(label)   
+        except:
+            raise A429Exception.A429MsgStructureError("Message {} has no label field".format(self._name))
         
-    def changeParityConvention(self,parity):
+    def changeParityConvention(self,parityConvention):
         '''
         Change the parity convention for the label
         'odd' is used by default at the message creation
         Parity need to be a string of value 'odd' or 'even'
+        TODO: test
         '''
-        pass
+        try:
+            parityField = [index for index , field in enumerate(self._fields) if field.name == 'parity'][0]
+            parityField.setConvention(parityConvention)   
+        except:
+            raise A429Exception.A429MsgStructureError("Message {} has no label field".format(self._name))
     
     def validateMessage(self):
         '''

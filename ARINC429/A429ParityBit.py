@@ -28,14 +28,31 @@ class ParityBit(A429MsgField.A429MsgField):
         '''
         A429MsgField.A429MsgField.__init__(self, 32, 1, 'parity')
         
+        self.setConvention(parityConvention)
+        
+        self._value = None
+        
+    def setConvention(self,parityConvention):
+        '''
+        set the parity convention
+        If a value is set and the parity convention is changing, revert
+        the parity bit
+        TODO: test
+        '''
+        
+        oldConvention = self._parityConvention
+        
         if type(parityConvention)!=type(str()):
             raise A429Exception.A429Exception("Parity Convention {} is not handled".format(parityConvention))
         elif parityConvention is not 'odd' and parityConvention is not'even':
             raise A429Exception.A429Exception("Parity Convention {} is not handled".format(parityConvention))
        
         self._parityConvention = parityConvention
-        self._value = None
         
+        if self._value is not None:
+            if self._parityConvention != oldConvention:
+                self._value = ( 0 if self._value == 1 else 1)
+                
     def setData(self,messageValue): 
         ''' set the parity bit value,as a function of the parity convention
         This function expect the bit value passed as a integer
