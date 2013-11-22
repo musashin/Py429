@@ -7,7 +7,6 @@ import unittest
 import A429LabelField
 import A429Exception
 
-
 class testValueExceptions(unittest.TestCase):
     
     def testCanRepresentItself(self):

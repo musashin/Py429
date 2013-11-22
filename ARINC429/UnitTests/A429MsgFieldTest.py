@@ -54,6 +54,17 @@ class PackingBaseFieldNormal(unittest.TestCase):
                 unpacked = field.unpack(1<<(movingBit + lsb -1))
                 self.assertEqual(unpacked,1<<(movingBit))
     
+    def testFootPrint(self):
+        ''' Test Foot print calculations'''
+        refValues = ({'lsb':3,'size':4,'footPrint':0b111100},
+                     {'lsb':1,'size':32,'footPrint':0b11111111111111111111111111111111},
+                     {'lsb':1,'size':1,'footPrint':0b1},
+                     {'lsb':5,'size':10,'footPrint':0b11111111110000},
+                     {'lsb':15,'size':7,'footPrint':0b111111100000000000000})
+        for testCase in refValues:
+            field = A429MsgField.A429MsgField(testCase['lsb'],testCase['size'],"test field")
+            self.assertEqual(field.getFootPrint(),testCase['footPrint'])
+        
 class PackingRangeLimits(unittest.TestCase):
     """ Verify Range Limiting Exceptions """
     def testRangeExceededMax(self):

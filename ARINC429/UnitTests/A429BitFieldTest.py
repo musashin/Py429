@@ -76,7 +76,7 @@ class testBitPackandUnpack(unittest.TestCase):
     
     def testBitPackingUnset(self):
         """
-        Move a bit from 1 to 32, check only this bit is notset
+        Move a bit from 1 to 32, check only this bit is not set
         """
         for i in range(1, 32):
             bit = A429DiscreteBitField.DiscreteBitField(bitIndex=i,
