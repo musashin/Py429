@@ -21,7 +21,16 @@ class ParityBit(A429MsgField.A429MsgField):
                                               repr(A429MsgField.A429MsgField))
 
     def __init__(self,parityConvention='odd'):
-
+        '''
+        Init a parity bit field.
+        parity convention can either be:
+        - 'odd' if the bit sum in the final A429 word shall be odd
+        - 'even' if the bit sum in the final A429 word shall be even
+        Any other parity convention will raise an exception
+        '''
+        self._parityConvention = None
+        self._value = None
+        
         '''
         Simply declare an 1 bit field at lsb 32, and keep
         track of the parity convention
@@ -30,14 +39,11 @@ class ParityBit(A429MsgField.A429MsgField):
         
         self.setConvention(parityConvention)
         
-        self._value = None
-        
     def setConvention(self,parityConvention):
         '''
         set the parity convention
         If a value is set and the parity convention is changing, revert
         the parity bit
-        TODO: test
         '''
         
         oldConvention = self._parityConvention

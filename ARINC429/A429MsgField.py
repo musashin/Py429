@@ -39,6 +39,11 @@ class A429MsgField(object):
         self.name = name
         self._mask=((2**self.size)-1)<<(self.lsb-1)
         
+    def getFootPrint(self):
+        '''
+        Return a word with bits at 1 in the space occupied by the field
+        '''
+        return self._mask
         
     def unpack(self,A429word):
         """ return the value given a 32 bit ARINC 429 message value """ 

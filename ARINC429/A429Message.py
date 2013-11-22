@@ -14,6 +14,7 @@ class Message(object):
     A429 messages. It does not contain any data, but rather contain a list 
     of field, which all contain data in 'engineering' units, as well as the info required to
     pack the data
+    TODO: add clear representation
     '''
 
     def __init__(self,name,parity='odd'):
@@ -37,14 +38,13 @@ class Message(object):
         except:
             return None
        
-        
     def setLabel(self,label):
         '''
         Set the label corresponding to this message
         TODO: test
         '''
         try:
-            labelField = [index for index , field in enumerate(self._fields) if field.name == 'label'][0]
+            labelField = [field for field in self._fields if field.name == 'label'][0]
             labelField.setData(label)   
         except:
             raise A429Exception.A429MsgStructureError("Message {} has no label field".format(self._name))
@@ -57,7 +57,7 @@ class Message(object):
         TODO: test
         '''
         try:
-            parityField = [index for index , field in enumerate(self._fields) if field.name == 'parity'][0]
+            parityField = [field for field in self._fields if field.name == 'parity'][0]
             parityField.setConvention(parityConvention)   
         except:
             raise A429Exception.A429MsgStructureError("Message {} has no label field".format(self._name))
@@ -70,10 +70,15 @@ class Message(object):
         - its name does not correspond to an existing field
         - there is at least one 'label' field and one 'parity' field
         - TODO: more for BDC label
+        
+        TODO test
         '''
         pass
     
-    def canThisFieldBeAdded(self,field):
+    def __field_overlaps(self,newField):
+        return all((field.getFootPrint()&newField.getFootPrint()) != 0 for field in self._fields)
+        
+    def canThisFieldBeAdded(self,newField):
         '''
         return True if the field passed as argument
         can be added :
@@ -82,6 +87,26 @@ class Message(object):
         '''
         pass
     
+    def addField(self,field):
+        '''
+        Add a field and reorder the message fields by LSB
+        TODO add validation of new field
+        '''
+        self._fields.append(field)
+        sorted(self._fields, key=lambda field: field.lsb)  # sort list by LBS
+    
+    def setFieldValueByName(self,fieldName,value):
+        '''
+        Set the field value given its name 
+        '''
+        pass
+    
+    def setFieldValueByIndex(self,fieldIndex,value):
+        '''
+        Set the field value given its index (field are ordered
+        by lsb ascending)
+        '''
+        pass    
     def clearFields(self):
         '''
         clear all fields values
@@ -107,23 +132,5 @@ class Message(object):
         '''
         pass
     
-    def setFieldValueByName(self,fieldName,value):
-        '''
-        Set the field value given its name 
-        '''
-        pass
-    
-    def setFieldValueByIndex(self,fieldIndex,value):
-        '''
-        Set the field value given its index (field are ordered
-        by lsb ascending)
-        '''
-        pass
-        
-    def addField(self,field):
-        '''
-        Add a field and reorder the message fields by LSB
-        '''
-        self._fields.append(field)
-        sorted(self._fields, key=lambda field: field.lsb)  # sort list by LBS
+   
         
