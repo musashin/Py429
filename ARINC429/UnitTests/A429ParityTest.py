@@ -40,6 +40,15 @@ class testNoData(unittest.TestCase):
         bit = A429ParityBit.ParityBit('odd')
         self.assertRaises(A429Exception.A429NoData,bit.pack)
         
+    def testClearing(self):
+        '''
+        Test data clearing
+        '''
+        bit = A429ParityBit.ParityBit('odd')
+        bit.setData(0x00)
+        bit.clear()
+        self.assertRaises(A429Exception.A429NoData,bit.pack)  
+              
 class testParity(unittest.TestCase):
     '''
     Test Parity Pack/Unpack Algorithm

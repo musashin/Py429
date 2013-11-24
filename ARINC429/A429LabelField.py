@@ -59,6 +59,12 @@ class LabelField(A429MsgField.A429MsgField):
             raise A429Exception.A429NoData(self.name)
         else:
             return self._label
+        
+    def clear(self):
+        '''
+        Clear the label value
+        '''
+        self._label = None
          
     def pack(self):
         '''

@@ -53,7 +53,13 @@ class DiscreteBitField(A429MsgField.A429MsgField):
             raise A429Exception.A429NoData(self.name)
         else:
             return self._value
-        
+            
+    def clear(self):
+        '''
+        Clear the label value
+        '''
+        self._value = None
+             
     def pack(self):
         '''
         Return the 32 bits word corresponding to an A429 message with the bit data (all other bits at zero)

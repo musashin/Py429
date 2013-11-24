@@ -56,9 +56,18 @@ class testNoData(unittest.TestCase):
         '''
         Call pack when the label was not set
         '''
+        labelField = A429LabelField.LabelField()
+        labelField.setData(str(41))
+        labelField.clear()
+        self.assertRaises(A429Exception.A429NoData,labelField.pack)
+    
+    def testClearing(self):
+        '''
+        Call pack when the label was not set
+        '''
         label = A429LabelField.LabelField()
         self.assertRaises(A429Exception.A429NoData,label.pack)
-    
+        
 class testLabelCreations(unittest.TestCase):
     """Verify that label fields are created properly"""
     refValues = ((0,0),(41,0b10000100),(107,0b11100010),(206,0b01100001),(350,0b00010111),(377,0xFF))

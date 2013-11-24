@@ -58,6 +58,18 @@ class testNoData(unittest.TestCase):
                                                       meaningWhenSet='happy',
                                                       meaningWhenNotSet='unhappy')
         self.assertRaises(A429Exception.A429NoData,bit.pack)
+     
+    def testClearing(self):
+        '''
+        Call pack when the label was not set
+        '''
+        bit = A429DiscreteBitField.DiscreteBitField(bitIndex=5,
+                                                      bitName='testBit',
+                                                      meaningWhenSet='happy',
+                                                      meaningWhenNotSet='unhappy')
+        bit.setData(True)
+        bit.clear()
+        self.assertRaises(A429Exception.A429NoData,bit.pack)   
         
 class testBitPackandUnpack(unittest.TestCase):
     """Verify that bits are packed and unpacked properly"""
