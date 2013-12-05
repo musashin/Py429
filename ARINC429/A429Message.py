@@ -23,11 +23,11 @@ class Message(object):
         '''
         self._name = name
         self._fields = list()
+        self.fieldAdditionRules = (self.__field_overlaps,self.__field_name_already_exist)
+         
         self.addField(A429LabelField.LabelField())
         self.addField(A429ParityBit.ParityBit(parity))
-            
-        self.fieldAdditionRules = (self.__field_overlaps,self.__field_name_already_exist)
-   
+        
     def __contain_a_single_label(self):
         '''
         Return True if the message contains a single label field, False otherwise
@@ -106,7 +106,7 @@ class Message(object):
             self._fields.append(field)
             sorted(self._fields, key=lambda field: field.lsb)  # sort list by LBS
         else: 
-            if self.__field_name_aleady_exist(field):
+            if self.__field_name_already_exist(field):
                 raise A429Exception.A429MsgStructureError('Field with name {fieldName} already exists\
                                                            in message {messageName}'.format(fieldName=field.name),
                                                                                             messageName=self._name)
@@ -136,20 +136,27 @@ class Message(object):
         '''
         Return true if all label in the field got their values set
         '''
-        pass
+        return all(field.is_data_set() for field in self._fields)
     
     def pack(self):
         '''
         Return the 32 bit word that correspond to this message
         with the values currently set
         '''
-        pass
+        if not self.areAllFieldValuesSet():
+            listOfNotSetField = [field.name for field in self._fields]
+            raise A429Exception.A429NoData("Cannot pack message {}: fields {} are not set".format(self._name,','.join(listOfNotSetField)))
+        else:
+            word = 0
+            for field in self._fields:
+                word = word | field.pack()
     
     def unpack(self,word):
         '''
         Given a 32 bit word, set all the fields values
         '''
-        pass
+        for field in self._fields:
+                field.unPack(word)
     
   
         
