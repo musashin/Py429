@@ -38,6 +38,9 @@ class ParityBit(A429MsgField.A429MsgField):
         A429MsgField.A429MsgField.__init__(self, 32, 1, 'parity')
         
         self.setConvention(parityConvention)
+    
+    def is_data_set(self):
+        return self._value is not None
         
     def setConvention(self,parityConvention):
         '''

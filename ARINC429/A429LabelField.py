@@ -27,13 +27,15 @@ class LabelField(A429MsgField.A429MsgField):
                                                   self.__class__.__name__,
                                                   id(self),
                                                   repr(A429MsgField.A429MsgField))
-
     def __init__(self):
         '''
         Simply declare an 8 bits field at lsb 1
         '''
         A429MsgField.A429MsgField.__init__(self,1, 8, 'label')
         self._label = None
+    
+    def is_data_set(self):
+        return self._label is not None
      
     def setData(self,label): 
         ''' set the label property 

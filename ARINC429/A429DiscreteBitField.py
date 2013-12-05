@@ -37,6 +37,9 @@ class DiscreteBitField(A429MsgField.A429MsgField):
         self._value = None
         self._meaningWhenSet = meaningWhenSet
         self._meaningWhenNotSet = meaningWhenNotSet
+    
+    def is_data_set(self):
+        return self._value is not None
         
     def setData(self,bitValue): 
         ''' set the bit value
