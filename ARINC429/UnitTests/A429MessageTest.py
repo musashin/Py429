@@ -12,9 +12,9 @@ class TestPacking(unittest.TestCase):
     '''
     
     def testBaseMessage(self):
-        baseMessage = A429Message.Message('baseMessage','odd')
+        baseMessage = A429Message.Message('baseMessage', 'odd')
         baseMessage.setLabel('257')
-        self.assertEqual(baseMessage.pack(),0b10000000000000000000000011110101, "Label Not Packed Properly")
+        self.assertEqual(baseMessage.pack(), 0b10000000000000000000000011110101, "Label Not Packed Properly")
 
 class TestProtections(unittest.TestCase):
     '''

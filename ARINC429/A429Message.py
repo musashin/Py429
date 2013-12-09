@@ -99,7 +99,7 @@ class Message(object):
         '''
         Add a field and reorder the message fields by LSB
         An exception is raised if the field cannot be added (not 
-        enougth room or same name)
+        enough room or same name)
         TODO test
         '''
         if self.canThisFieldBeAdded(field):
