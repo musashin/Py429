@@ -45,7 +45,7 @@ class DiscreteBitField(A429MsgField.A429MsgField):
         ''' set the bit value
         This function expect the bit value passed as a boolean
         '''
-        if type(bitValue)!=type(bool()):
+        if type(bitValue) != type(bool()):
             raise A429Exception.A429Exception('Bit are expected as bool')
         else:
             self._value  = bitValue
