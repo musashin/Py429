@@ -21,6 +21,11 @@ class A429Exception(Exception):
                 + "]  Label-" + self.label + "-" \
                 + "  SDI-" + self.sdi + "-] "\
                 + self.message+"\n"
+    def __repr__(self):
+        return "Error in Message " \
+                + "]  Label-" + self.label + "-" \
+                + "  SDI-" + self.sdi + "-] "\
+                + self.message+"\n"
         
 
 class A429NoData(A429Exception):
