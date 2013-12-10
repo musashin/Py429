@@ -5,6 +5,7 @@ Created on 2013-12-04
 '''
 import unittest
 import A429Message
+import A429Exception
 
 class TestPacking(unittest.TestCase):
     '''
@@ -20,7 +21,14 @@ class TestProtections(unittest.TestCase):
     '''
     Verify safeguard are in place
     '''
-    
+
+    def testCannotPackBasicMessage(self):
+        '''
+        Ensure the basic message, with no data set, cannot be packed
+        '''
+        baseMessage = A429Message.Message(name='baseMessage')
+        self.assertRaisesRegexp(A429Exception.A429NoData,baseMessage.pack(),"label")
+
     def testCannotPackWhenDataNotSet(self):
         '''
         Ensure a message which does not have all

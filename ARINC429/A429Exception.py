@@ -36,9 +36,14 @@ class A429NoData(A429Exception):
     def __init__(self,fieldName,label="unknown",sdi="unknown"):
         A429Exception.__init__(self, label, sdi)
         self.fieldName = fieldName
+
     def __str__(self):
-        error = super(A429MsgStructureError,self).__str__()
-        return error + " : no data in field" + self.fieldName
+        error = super(A429NoData,self).__str__()
+        return error + " : no data in field " + self.fieldName
+
+    def __str__(self):
+        error = super(A429NoData,self).__str__()
+        return error + " : no data in field " + self.fieldName
        
 class A429MsgStructureError(A429Exception):
     '''
