@@ -93,13 +93,15 @@ class Message(object):
         TODO test
         '''        
         for isInvalidField in self.fieldAdditionRules:
-            if isInvalidField(newField) : return True
+            if isInvalidField(newField) : return False
+
+        return True
     
     def addField(self,field):
         '''
         Add a field and reorder the message fields by LSB
         An exception is raised if the field cannot be added (not 
-        enough room or same name)
+        enougth room or same name)
         TODO test
         '''
         if self.canThisFieldBeAdded(field):
@@ -136,20 +138,27 @@ class Message(object):
         '''
         Return true if all label in the field got their values set
         '''
-        return all(field.is_data_set() for field in self._fields)
+        field_to_set = [field for field in self._fields if field.name != "parity"]
+        return all(field.is_data_set() for field in field_to_set)
     
     def pack(self):
         '''
         Return the 32 bit word that correspond to this message
         with the values currently set
         '''
+        field_to_set = [field for field in self._fields if field.name != "parity"]
         if not self.areAllFieldValuesSet():
-            listOfNotSetField = [field.name for field in self._fields]
+            listOfNotSetField = [field.name for field in field_to_set if not field.is_data_set()]
             raise A429Exception.A429NoData("Cannot pack message {}: fields {} are not set".format(self._name,','.join(listOfNotSetField)))
         else:
             word = 0
-            for field in self._fields:
+            for field in field_to_set:
                 word = word | field.pack()
+            parityField = [field for field in self._fields if field.name == 'parity'][0]
+            parityField.setData(word)
+            word = word | parityField.pack()  
+
+            return word
     
     def unpack(self,word):
         '''
