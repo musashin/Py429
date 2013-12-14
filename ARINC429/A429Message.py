@@ -149,7 +149,7 @@ class Message(object):
         field_to_set = [field for field in self._fields if field.name != "parity"]
         if not self.areAllFieldValuesSet():
             listOfNotSetField = [field.name for field in field_to_set if not field.is_data_set()]
-            raise A429Exception.A429NoData("Cannot pack message {}: fields {} are not set".format(self._name,','.join(listOfNotSetField)))
+            raise A429Exception.A429NoData(fieldName=','.join(listOfNotSetField))
         else:
             word = 0
             for field in field_to_set:

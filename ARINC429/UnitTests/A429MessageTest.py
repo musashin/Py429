@@ -27,7 +27,8 @@ class TestProtections(unittest.TestCase):
         Ensure the basic message, with no data set, cannot be packed
         '''
         baseMessage = A429Message.Message(name='baseMessage')
-        self.assertRaisesRegexp(A429Exception.A429NoData,baseMessage.pack(),"label")
+        self.assertRaisesRegexp(A429Exception.A429NoData,"label",baseMessage.pack)
+
 
     def testCannotPackWhenDataNotSet(self):
         '''

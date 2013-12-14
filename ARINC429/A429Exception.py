@@ -12,18 +12,18 @@ class A429Exception(Exception):
         SDI    -- SDI of the message that raises the error
         msg    -- explanation of the error
     '''
-    def __init__(self,message,label='unknown',sdi='unknown'):
+    def __init__(self,message='',label='unknown',sdi='unknown'):
         self.label = label
         self.sdi = sdi
         self.message = message
     def __str__(self):
         return "Error in Message " \
-                + "]  Label-" + self.label + "-" \
+                + "[  Label-" + self.label + "-" \
                 + "  SDI-" + self.sdi + "-] "\
                 + self.message+"\n"
     def __repr__(self):
         return "Error in Message " \
-                + "]  Label-" + self.label + "-" \
+                + "[  Label-" + self.label + "-" \
                 + "  SDI-" + self.sdi + "-] "\
                 + self.message+"\n"
         
