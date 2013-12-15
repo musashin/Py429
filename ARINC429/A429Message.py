@@ -123,7 +123,7 @@ class Message(object):
         try:
             labelField = [field for field in self._fields if field.name == fieldName][0]
             labelField.setData(value)   
-        except:
+        except IndexError:
             raise A429Exception.A429MsgStructureError("Message {} has no label field".format(self._name))
     
     def clearFields(self):
