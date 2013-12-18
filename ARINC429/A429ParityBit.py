@@ -106,5 +106,23 @@ class ParityBit(A429MsgField.A429MsgField):
     
     def unpack(self,A429word):
         """ set the bit value given a 32 bit ARINC 429 message value """ 
-        self._value = bool(A429MsgField.A429MsgField.unpack(self,A429word)) 
-        
+        self._value = bool(A429MsgField.A429MsgField.unpack(self,A429word))
+
+    def isMessageValid(self,A429word):
+        '''
+        Determine if the message is valid given the message content and the parity convention
+        @param A429word: 32 bit packed ARINC 429 word
+        @return: True if the message is valid
+        '''
+        count = sum( [A429word&(1<<i)>0 for i in range(32)] )
+
+        if count%2 is 0: # the message content is even
+            if self._parityConvention is 'odd':
+                return False
+            else:
+                return True
+        else:
+            if self._parityConvention is 'odd':
+                return True
+            else:
+                return False

@@ -41,9 +41,24 @@ class A429NoData(A429Exception):
         error = super(A429NoData,self).__str__()
         return error + " : no data in field " + self.fieldName
 
-    def __str__(self):
+    def __repr__(self):
         error = super(A429NoData,self).__str__()
         return error + " : no data in field " + self.fieldName
+
+class A429InvalidMessage(A429Exception):
+    '''
+    Exception raised whenever an A429 message is not valid
+    '''
+    def __init__(self,label="unknown",sdi="unknown"):
+        A429Exception.__init__(self, label, sdi)
+
+    def __str__(self):
+        error = super(A429InvalidMessage,self).__str__()
+        return error + " :  the message is not valid"
+
+    def __repr__(self):
+        error = super(A429InvalidMessage,self).__str__()
+        return error + " :  the message is not valid"
        
 class A429MsgStructureError(A429Exception):
     '''

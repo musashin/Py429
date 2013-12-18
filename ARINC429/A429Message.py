@@ -14,8 +14,8 @@ class Message(object):
     A429 messages. It does not contain any data, but rather contain a list 
     of field, which all contain data in 'engineering' units, as well as the info required to
     pack the data
-    TODO: add clear representation
     '''
+    #TODO add _repr_
     def __init__(self,name,parity='odd'):
         '''
         Create an A429 Message by simply adding a label and a parity bit
@@ -39,31 +39,25 @@ class Message(object):
         Return True if the message contains a single parity field, False otherwise
         '''
         return [isinstance(A429ParityBit.ParityBit,field) for field in self._fields].count(True)==1
-         
-    def getFieldIndex(self,fieldName):
-        '''
-        Given a field name, this function return the field index
-        (field are ordered by lsb ascending)
-        If more that one label share the same name, an exception is returned
-        '''
-        try: 
-            return [index for index , field in enumerate(self._fields) if field.name == fieldName][0]
-        except:
-            return None
+
        
     def setLabel(self,label):
         '''
         Set the label corresponding to this message
-        TODO: test
         '''
         self.setFieldValueByName('label',label)
- 
+
+    def getLabel(self):
+        '''
+        Get the label corresponding to this message
+        '''
+        return self.getFieldValueByName('label')
+
     def changeParityConvention(self,parityConvention):
         '''
         Change the parity convention for the label
         'odd' is used by default at the message creation
         Parity need to be a string of value 'odd' or 'even'
-        TODO: test
         '''
         try:
             parityField = [field for field in self._fields if field.name == 'parity'][0]
@@ -90,7 +84,6 @@ class Message(object):
         can be added :
         - it does not overlap with any existing field)
         - its name does not correspond to an existing field
-        TODO test
         '''        
         for isInvalidField in self.fieldAdditionRules:
             if isInvalidField(newField) : return False
@@ -102,7 +95,6 @@ class Message(object):
         Add a field and reorder the message fields by LSB
         An exception is raised if the field cannot be added (not 
         enougth room or same name)
-        TODO test
         '''
         if self.canThisFieldBeAdded(field):
             self._fields.append(field)
@@ -110,29 +102,38 @@ class Message(object):
         else: 
             if self.__field_name_already_exist(field):
                 raise A429Exception.A429MsgStructureError('Field with name {fieldName} already exists\
-                                                           in message {messageName}'.format(fieldName=field.name),
-                                                                                            messageName=self._name)
+                                                           in message {messageName}'.format(fieldName=field.name,
+                                                                                            messageName=self._name))
             else:
                 raise A429Exception.A429MsgStructureError('This fields overlap with existing fields in the message')
     
     def setFieldValueByName(self,fieldName,value):
         '''
-        Set the field value given its name 
-        TODO: test
+        Set the field value given its name
         '''
         try:
             labelField = [field for field in self._fields if field.name == fieldName][0]
             labelField.setData(value)   
         except IndexError:
             raise A429Exception.A429MsgStructureError("Message {} has no label field".format(self._name))
+
+    def getFieldValueByName(self,fieldName):
+        '''
+        Get the field value given its name
+        '''
+        try:
+            labelField = [field for field in self._fields if field.name == fieldName][0]
+            return labelField.getData()
+        except IndexError:
+            raise A429Exception.A429MsgStructureError("Message {} has no label field".format(self._name))
     
     def clearFields(self):
         '''
         clear all fields values
-        TODO test
         '''
         for field in self._fields:
             field.clear()
+        #TODO test
     
     def areAllFieldValuesSet(self):
         '''
@@ -164,8 +165,13 @@ class Message(object):
         '''
         Given a 32 bit word, set all the fields values
         '''
-        for field in self._fields:
-                field.unPack(word)
+        parityField = [field for field in self._fields if field.name == 'parity'][0]
+        if not parityField.isMessageValid(word):
+            raise A429Exception.A429InvalidMessage(label=self._name)
+
+        else:
+            for field in self._fields:
+                    field.unpack(word)
     
   
         

@@ -105,7 +105,18 @@ class testParity(unittest.TestCase):
             self.assertEqual(parityBit.pack(),1<<31 if case['parity']=='even' else 0, "Parity Not Calculated Properly")
             parityBit.setConvention('even')
             self.assertEqual(parityBit.pack(),0 if case['parity']=='even' else 1<<31, "Parity Not Calculated Properly")      
-     
+
+    def testMessageValidityTest(self):
+        '''
+        Test the function that determine the message validity
+        '''
+        parityBitOdd = A429ParityBit.ParityBit('odd')
+        parityBitEven = A429ParityBit.ParityBit('even')
+        for case in self.cases:
+            self.assertEqual(parityBitOdd.isMessageValid(case['word']),False if case['parity']=='even' else True, "Parity Not Calculated Properly")
+            parityBitEven.setData(case['word'])
+            self.assertEqual(parityBitEven.isMessageValid(case['word']),True if case['parity']=='even' else False, "Parity Not Calculated Properly")
+
 if __name__ == "__main__":
    
     unittest.main()
