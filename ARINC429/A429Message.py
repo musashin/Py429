@@ -94,7 +94,7 @@ class Message(object):
         '''
         Add a field and reorder the message fields by LSB
         An exception is raised if the field cannot be added (not 
-        enougth room or same name)
+        enough room or same name)
         '''
         if self.canThisFieldBeAdded(field):
             self._fields.append(field)
@@ -106,6 +106,20 @@ class Message(object):
                                                                                             messageName=self._name))
             else:
                 raise A429Exception.A429MsgStructureError('This fields overlap with existing fields in the message')
+
+    def removeField(self,fieldName):
+        '''
+        Remove a message field given its name
+        '''
+        self._fields = [field for field in self._fields if not field.name==fieldName]
+
+    def isFieldInMessage(self,fieldName):
+        '''
+        Return True if the field with a given name
+        is part of the message, False otherwise
+        '''
+        return any(field.name == fieldName for field in self._fields)
+
     
     def setFieldValueByName(self,fieldName,value):
         '''

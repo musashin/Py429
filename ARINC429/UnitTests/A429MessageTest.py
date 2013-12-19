@@ -8,6 +8,36 @@ import A429Message
 import A429Exception
 import A429DiscreteBitField
 
+class TestMessageConstruction(unittest.TestCase):
+    '''
+    Test message construction methods
+    '''
+
+    def testFieldAddition(self):
+        baseMessage = A429Message.Message('baseMessage', 'odd')
+        baseMessage.addField(A429DiscreteBitField.DiscreteBitField(10,'testBit','test bit is happy','test bit is not happy'))
+        self.assertTrue(baseMessage.isFieldInMessage('testBit'),'Cannot add field properly')
+
+    def testFieldDeletion(self):
+        baseMessage = A429Message.Message('baseMessage', 'odd')
+        baseMessage.addField(A429DiscreteBitField.DiscreteBitField(10,'testBit','test bit is happy','test bit is not happy'))
+        self.assertTrue(baseMessage.isFieldInMessage('testBit'),'Cannot add field properly')
+        baseMessage.removeField('testBit')
+        self.assertFalse(baseMessage.isFieldInMessage('testBit'),'Cannot remove field properly')
+
+    def testFieldAdditionReadiness(self):
+        '''
+        make sure the function that verify all data are set behaves properly
+        '''
+        baseMessage = A429Message.Message('baseMessage', 'odd')
+        baseMessage.addField(A429DiscreteBitField.DiscreteBitField(10,'testBit','test bit is happy','test bit is not happy'))
+        sameNameField = A429DiscreteBitField.DiscreteBitField(12,'testBit','test bit is happy','test bit is not happy')
+        overlappingField = A429DiscreteBitField.DiscreteBitField(10,'notTestBit','test bit is happy','test bit is not happy')
+        differentNameField = A429DiscreteBitField.DiscreteBitField(13,'notTestBit','test bit is happy','test bit is not happy')
+        self.assertTrue(baseMessage.canThisFieldBeAdded(differentNameField),'canThisFieldBeAdded cannot be trusted')
+        self.assertFalse(baseMessage.canThisFieldBeAdded(sameNameField),'canThisFieldBeAdded cannot be trusted')
+        self.assertFalse(baseMessage.canThisFieldBeAdded(overlappingField),'canThisFieldBeAdded cannot be trusted')
+
 class TestPacking(unittest.TestCase):
     '''
     Test the packing functionality
@@ -20,8 +50,7 @@ class TestPacking(unittest.TestCase):
         baseMessage.changeParityConvention('even')
         self.assertEqual(baseMessage.pack(), 0b00000000000000000000000011110101, "Label Not Packed Properly")
 
-    def testSimpleFieldAddition(self):
-
+    def testSimpleMessage(self):
         baseMessage = A429Message.Message('baseMessage', 'odd')
         baseMessage.setLabel('257')
         baseMessage.addField(A429DiscreteBitField.DiscreteBitField(10,'testBit','test bit is happy','test bit is not happy'))
@@ -41,11 +70,22 @@ class TestUnpacking(unittest.TestCase):
         baseMessage.unpack(0b10000000000000000000000011110101)
         self.assertEqual(baseMessage.getLabel(), 0257, "Label Not UnPacked Properly")
         baseMessage.changeParityConvention('even')
-        self.assertEqual(baseMessage.pack(), 0b00000000000000000000000011110101, "Label Not Packed Properly")
+        self.assertEqual(baseMessage.pack(), 0b00000000000000000000000011110101, "Label Not Unpacked Properly")
 
-    def testSimpleFieldAddition(self):
-         pass
-        #TODO
+    def testSimpleMessage(self):
+        '''
+        Validate added field is unpacked
+        '''
+        baseMessage = A429Message.Message('baseMessage', 'odd')
+        baseMessage.addField(A429DiscreteBitField.DiscreteBitField(10,'testBit','test bit is happy','test bit is not happy'))
+        baseMessage.unpack(0b00000000000000000000001011110101)
+        self.assertEqual(baseMessage.getFieldValueByName('testBit'), True, "Label Not unpacked Properly")
+        baseMessage.unpack(0b10000000000000000000000011110101)
+        self.assertEqual(baseMessage.getFieldValueByName('testBit'), False, "Label Not unpacked Properly")
+
+    def testMessageClearing(self):
+        pass
+        #TODO test message can be cleared
 
 
 class TestProtections(unittest.TestCase):
