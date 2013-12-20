@@ -13,6 +13,12 @@ class TestMessageConstruction(unittest.TestCase):
     Test message construction methods
     '''
 
+    def testCanRepresentItself(self):
+        try:
+            A429Message.Message('baseMessage', 'odd')
+        except Exception:
+            self.fail("A429Message cannot represent itself")
+
     def testFieldAddition(self):
         baseMessage = A429Message.Message('baseMessage', 'odd')
         baseMessage.addField(A429DiscreteBitField.DiscreteBitField(10,'testBit','test bit is happy','test bit is not happy'))
@@ -83,10 +89,6 @@ class TestUnpacking(unittest.TestCase):
         baseMessage.unpack(0b10000000000000000000000011110101)
         self.assertEqual(baseMessage.getFieldValueByName('testBit'), False, "Label Not unpacked Properly")
 
-    def testMessageClearing(self):
-        pass
-        #TODO test message can be cleared
-
 
 class TestProtections(unittest.TestCase):
     '''
@@ -131,12 +133,15 @@ class TestProtections(unittest.TestCase):
         baseMessage.changeParityConvention('even')
         self.assertRaises(A429Exception.A429InvalidMessage,baseMessage.unpack,0b10000000000000000000000011110101)
 
-    def testCannotPackWhenDataNotSet(self):
+    def testDataCanBeCleared(self):
         '''
-        Ensure a message which does not have all
-        fields set cannot be packed
+        Ensure the clear data function perform as expected
         '''
-        #TODO
+        baseMessage = A429Message.Message('baseMessage', 'odd')
+        baseMessage.setLabel('257')
+        self.assertEqual(baseMessage.pack(), 0b10000000000000000000000011110101, "Label Not Packed Properly")
+        baseMessage.clearFields()
+        self.assertRaisesRegexp(A429Exception.A429NoData,"label",baseMessage.pack)
 
 if __name__ == "__main__":
     unittest.main()

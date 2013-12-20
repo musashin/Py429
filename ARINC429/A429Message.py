@@ -27,7 +27,15 @@ class Message(object):
          
         self.addField(A429LabelField.LabelField())
         self.addField(A429ParityBit.ParityBit(parity))
-        
+
+    def __repr__(self):
+
+        listOfFields= ','.join([field.name for field in self._fields])
+
+        return '<%s.%s object at 0x%x [contain %s]>'%(self.__module__,
+                                              self.__class__.__name__,
+                                             id(self),
+                                             listOfFields)
     def __contain_a_single_label(self):
         '''
         Return True if the message contains a single label field, False otherwise
@@ -120,7 +128,6 @@ class Message(object):
         '''
         return any(field.name == fieldName for field in self._fields)
 
-    
     def setFieldValueByName(self,fieldName,value):
         '''
         Set the field value given its name
@@ -147,7 +154,6 @@ class Message(object):
         '''
         for field in self._fields:
             field.clear()
-        #TODO test
     
     def areAllFieldValuesSet(self):
         '''
