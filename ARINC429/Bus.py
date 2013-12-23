@@ -1,44 +1,35 @@
-__author__ = 'nicolas'
+import Exception
 
 
 class Bus(object):
     '''
-    This class represents an ARINC 429 bus, that is it contains:
-    - speed characteristic for the bus
-    - a list of unique A429m messages
+    Present a bus object, that is a collection of
+    A429 messsage with uniques Label/SDI combinaison
     '''
 
-    def __init__(self,speed = 'high'):
-        ''''
-        Create an A429 bus
-        '''
-        self.__speed = speed
-        self.__messages = list()
+    def __init__(self, name,speed='high'):
+        self._name = name
+        self._speed = speed
+        self._messages = dict()
 
-    def addMessage(self,message):
+    def addMessage(self, message):
         '''
-        Add a new message definition to the bus
-        Message in the same bus should have unique name.
-        Additionnaly, duplicate label/SDI are not authorised.
-        @param message: ARINC 429 message
+        Add a message to the Bus message dictionnary
+        The message shall have a unique label/SDI combinaison
         '''
-        #TODO code
-        pass
+        label = message.getLabel()
+        sdi = None  #TODO: add SDI handling
 
-    def getMessage(self,messageName)
-        '''
-        Get a reference to a message given its name
-        @param messageName: Name of the message to access
-        @return: reference to the message
-        '''
-        #TODO
-        pass
+        if (label, sdi) in self._messages:
+            raise Exception.A429MsgStructureError('A message with the same signature\
+                                                  already exist in {}'.format(self._name),
+                                                  label=label,
+                                                  sdi=str(sdi))
+        else:
+            self._messages[label, sdi] = message
 
-    def removeMessage(self,messageName):
+    def removeMessage(self, message):
         '''
-        Remove a message from the bus, given its name
-        @param messageName: name of the message to remove
-        @return:
+        Remove a message to the Bus message dictionnary
         '''
-        #TODO
         pass
