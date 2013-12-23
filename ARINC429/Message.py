@@ -20,7 +20,7 @@ class Message(object):
         Create an A429 Message by simply adding a label and a parity bit
         Note that the parity is odd by default but can be modified as necessary
         '''
-        self._name = name
+        self.name = name
         self._fields = list()
         self.fieldAdditionRules = (self.__field_overlaps,self.__field_name_already_exist)
          
@@ -60,6 +60,17 @@ class Message(object):
         '''
         return self.getFieldValueByName('label')
 
+    def getSDI(self):
+        '''
+        Get the SDI corresponding to this message
+        SDI are optionals: if this message has no SDI,
+        return None
+        '''
+        try:
+            return self.getFieldValueByName('sdi')
+        except:
+            return None
+
     def changeParityConvention(self,parityConvention):
         '''
         Change the parity convention for the label
@@ -70,7 +81,7 @@ class Message(object):
             parityField = [field for field in self._fields if field.name == 'parity'][0]
             parityField.setConvention(parityConvention)   
         except:
-            raise Exception.A429MsgStructureError("Message {} has no label field".format(self._name))
+            raise Exception.A429MsgStructureError("Message {} has no label field".format(self.name))
     
     def __field_overlaps(self,newField):
         '''
@@ -110,7 +121,7 @@ class Message(object):
             if self.__field_name_already_exist(field):
                 raise Exception.A429MsgStructureError('Field with name {fieldName} already exists\
                                                            in message {messageName}'.format(fieldName=field.name,
-                                                                                            messageName=self._name))
+                                                                                            messageName=self.name))
             else:
                 raise Exception.A429MsgStructureError('This fields overlap with existing fields in the message')
 
@@ -135,7 +146,7 @@ class Message(object):
             labelField = [field for field in self._fields if field.name == fieldName][0]
             labelField.setData(value)   
         except IndexError:
-            raise Exception.A429MsgStructureError("Message {} has no label field".format(self._name))
+            raise Exception.A429MsgStructureError("Message {} has no label field".format(self.name))
 
     def getFieldValueByName(self,fieldName):
         '''
@@ -145,7 +156,7 @@ class Message(object):
             labelField = [field for field in self._fields if field.name == fieldName][0]
             return labelField.getData()
         except IndexError:
-            raise Exception.A429MsgStructureError("Message {} has no label field".format(self._name))
+            raise Exception.A429MsgStructureError("Message {} has no label field".format(self.name))
     
     def clearFields(self):
         '''
@@ -186,7 +197,7 @@ class Message(object):
         '''
         parityField = [field for field in self._fields if field.name == 'parity'][0]
         if not parityField.isMessageValid(word):
-            raise Exception.A429InvalidMessage(label=self._name)
+            raise Exception.A429InvalidMessage(label=self.name)
 
         else:
             for field in self._fields:

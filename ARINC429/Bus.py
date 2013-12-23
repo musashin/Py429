@@ -1,5 +1,5 @@
 import Exception
-
+import Message
 
 class Bus(object):
     '''
@@ -7,10 +7,17 @@ class Bus(object):
     A429 messsage with uniques Label/SDI combinaison
     '''
 
-    def __init__(self, name,speed='high'):
+    def __init__(self, name, speed='high'):
+        '''
+        Constructor
+
+        '''
         self._name = name
         self._speed = speed
         self._messages = dict()
+
+    def getMessageNames(self):
+        return [message.name for message in self._messages]
 
     def addMessage(self, message):
         '''
@@ -18,7 +25,7 @@ class Bus(object):
         The message shall have a unique label/SDI combinaison
         '''
         label = message.getLabel()
-        sdi = None  #TODO: add SDI handling
+        sdi = message.getSDI()
 
         if (label, sdi) in self._messages:
             raise Exception.A429MsgStructureError('A message with the same signature\
