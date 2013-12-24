@@ -35,8 +35,36 @@ class Bus(object):
         else:
             self._messages[label, sdi] = message
 
+    def replaceMessage(self, message):
+        '''
+        replace an existing message in the Bus message dictionnary
+        The message shall exist already
+        '''
+        #TODO test
+        label = message.getLabel()
+        sdi = message.getSDI()
+
+        if (label, sdi) in self._messages:
+            self._messages[label, sdi] = message
+        else:
+            raise Exception.A429MsgStructureError('A message with the same signature\
+                                                  do not exist in {}'.format(self._name),
+                                                  label=label,
+                                                  sdi=str(sdi))
+
     def removeMessage(self, message):
         '''
-        Remove a message to the Bus message dictionnary
+        Given an A429 message,
+        Remove a message with the same signature from the Bus message dictionnary
         '''
-        pass
+        label = message.getLabel()
+        sdi = message.getSDI()
+
+
+        if (label, sdi) in self._messages:
+            del(self._messages[label, sdi])
+        else:
+            raise Exception.A429MsgStructureError('A message with the same signature\
+                                                  do not exist in {}'.format(self._name),
+                                                  label=label,
+                                                  sdi=str(sdi))
