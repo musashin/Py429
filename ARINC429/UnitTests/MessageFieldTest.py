@@ -98,7 +98,28 @@ class StructureExceptions(unittest.TestCase):
     def testTooLargeField(self):
         """ MSB shall never be greater then 32 """
         self.assertRaises(Exception.A429MsgStructureError, MessageField.Field,1,33,"Test Field")
-         
+
+class comparison(unittest.TestCase):
+    '''
+    Verify Comparison operations
+    '''
+
+    def testEqual(self):
+         field1 = MessageField.Field(5,2,"Test Field")
+         field2 = MessageField.Field(5,2,"Test Field")
+         self.assertEqual(field1,field2,'Message Field Comparison not working')
+
+    def testDifferent(self):
+         field1 = MessageField.Field(5,2,"Test Field")
+         field2 = MessageField.Field(5,3,"Test Field")
+         self.assertNotEqual(field1,field2,'Message Field Comparison not working')
+
+         field3 = MessageField.Field(4,2,"Test Field")
+         self.assertNotEqual(field1,field3,'Message Field Comparison not working')
+
+         field4 = MessageField.Field(5,2,"Not Test Field")
+         self.assertNotEqual(field1,field4,'Message Field Comparison not working')
+
                
 if __name__ == "__main__":
     unittest.main()

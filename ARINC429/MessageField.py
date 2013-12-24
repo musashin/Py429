@@ -76,5 +76,22 @@ class Field(object):
                                                   0,\
                                                   value)
         else:
-            return value<<(self.lsb-1) 
+            return value<<(self.lsb-1)
+
+    def __eq__(self, other):
+        '''
+        Define the == operator to compare size, lsb and name
+        '''
+        if isinstance(other, Field):
+            return self.lsb == other.lsb and self.size == other.size and other.name == self.name
+        else:
+            return NotImplemented
+    def __ne__(self, other):
+        result = self.__eq__(other)
+        '''
+        Define the != operator to compare size, lsb and name
+        '''
+        if result is NotImplemented:
+            return result
+        return not result
     
