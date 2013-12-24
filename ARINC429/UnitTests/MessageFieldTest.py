@@ -110,15 +110,15 @@ class comparison(unittest.TestCase):
          self.assertEqual(field1,field2,'Message Field Comparison not working')
 
     def testDifferent(self):
-         field1 = MessageField.Field(5,2,"Test Field")
-         field2 = MessageField.Field(5,3,"Test Field")
-         self.assertNotEqual(field1,field2,'Message Field Comparison not working')
+        field1 = MessageField.Field(5,2,"Test Field")
+        field2 = MessageField.Field(5,3,"Test Field")
+        self.assertNotEqual(field1,field2,'Message Field Comparison not working')
 
-         field3 = MessageField.Field(4,2,"Test Field")
-         self.assertNotEqual(field1,field3,'Message Field Comparison not working')
+        field3 = MessageField.Field(4,2,"Test Field")
+        self.assertNotEqual(field1,field3,'Message Field Comparison not working')
 
-         field4 = MessageField.Field(5,2,"Not Test Field")
-         self.assertNotEqual(field1,field4,'Message Field Comparison not working')
+        field4 = MessageField.Field(5,2,"Not Test Field")
+        self.assertNotEqual(field1,field4,'Message Field Comparison not working')
 
                
 if __name__ == "__main__":
