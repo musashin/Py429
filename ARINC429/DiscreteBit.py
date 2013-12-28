@@ -75,4 +75,24 @@ class Field(MessageField.Field):
     def unpack(self,A429word):
         """ set the bit value given a 32 bit ARINC 429 message value """ 
         self._value = bool(MessageField.Field.unpack(self,A429word))
-        
+
+    def __eq__(self, other):
+        '''
+        Define the == operator to compare field definition AND parity convention
+        '''
+        if isinstance(other, Field):
+            return self.__dict__ == other.__dict__
+        else:
+            return NotImplemented
+
+    def __ne__(self, other):
+        '''
+        Define the != operator to compare field definition AND parity convention
+        '''
+        result = self.__eq__(other)
+        '''
+        Define the != operator to compare size, lsb and name
+        '''
+        if result is NotImplemented:
+            return result
+        return not result

@@ -90,5 +90,29 @@ class testLabelCreations(unittest.TestCase):
             labelField.unpack(packed)
             self.assertEqual(labelField.getData(),int(str(label),8), "Label Not Unpacked Properly")
 
+class comparison(unittest.TestCase):
+    '''
+    Verify Comparison operations
+    '''
+
+    def testEqual(self):
+        field1 = Label.Field()
+        field2 = Label.Field()
+        self.assertEqual(field1,field2,'Label Field Comparison not working')
+
+        field1.setData('0365')
+        field2.setData('0365')
+        self.assertEqual(field1,field2,'Label Field Comparison not working')
+
+    def testDifferent(self):
+        field1 = Label.Field()
+        field1.setData('0365')
+        field2 = Label.Field()
+        field2.setData('0364')
+        self.assertNotEqual(field1,field2,'Label Field Comparison not working')
+
+        field3 = Label.Field()
+        self.assertNotEqual(field1,field3,'Label Field Comparison not working')
+
 if __name__ == "__main__":
     unittest.main()

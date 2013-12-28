@@ -5,22 +5,22 @@ Created on 2013-11-12
 '''
 import unittest
 import Label
-import Field
+import Parity
 import Exception
 
 class ExceptionRaise(unittest.TestCase):
 
     def testCanRepresentItself(self):
         try:
-            Field.Field()
+            Parity.Field()
         except Exception:
             self.fail("LabelField cannot represent itself")
 
     def testInvalidConventions(self):
         """ A429ParityBit should fail for parity convention other than odd or even"""
-        self.assertRaises(Exception.A429Exception, Field.Field, "test")
-        self.assertRaises(Exception.A429Exception, Field.Field, "")
-        self.assertRaises(Exception.A429Exception, Field.Field,5)
+        self.assertRaises(Exception.A429Exception, Parity.Field, "test")
+        self.assertRaises(Exception.A429Exception, Parity.Field, "")
+        self.assertRaises(Exception.A429Exception, Parity.Field,5)
 
 class testNoData(unittest.TestCase):
     '''
@@ -30,21 +30,21 @@ class testNoData(unittest.TestCase):
         '''
         Call get data when the bit field was not set
         '''
-        bit = Field.Field('odd')
+        bit = Parity.Field('odd')
         self.assertRaises(Exception.A429NoData,bit.getData)
     
     def testPackNoData(self):
         '''
         Call pack when the  bit field was not set
         '''
-        bit = Field.Field('odd')
+        bit = Parity.Field('odd')
         self.assertRaises(Exception.A429NoData,bit.pack)
         
     def testClearing(self):
         '''
         Test data clearing
         '''
-        bit = Field.Field('odd')
+        bit = Parity.Field('odd')
         bit.setData(0x00)
         bit.clear()
         self.assertRaises(Exception.A429NoData,bit.pack)
@@ -62,11 +62,11 @@ class testParity(unittest.TestCase):
         '''
         Verify Case of no bit set in message
         '''
-        parityBitOdd = Field.Field('odd')
+        parityBitOdd = Parity.Field('odd')
         parityBitOdd.setData(0x00)
         self.assertEqual(parityBitOdd.pack(),1<<31, "Parity Not Calculated Properly")
     
-        parityBitEven = Field.Field('even')
+        parityBitEven = Parity.Field('even')
         parityBitEven.setData(0x00)
         self.assertEqual(parityBitEven.pack(),0, "Parity Not Calculated Properly")
         
@@ -74,11 +74,11 @@ class testParity(unittest.TestCase):
         '''
         Verify Case of all bits set in message
         '''
-        parityBitOdd = Field.Field('odd')
+        parityBitOdd = Parity.Field('odd')
         parityBitOdd.setData(0x7FFFFFFF)
         self.assertEqual(parityBitOdd.pack(),0, "Parity Not Calculated Properly")
     
-        parityBitEven = Field.Field('even')
+        parityBitEven = Parity.Field('even')
         parityBitEven.setData(0x7FFFFFFF)
         self.assertEqual(parityBitEven.pack(),1<<31, "Parity Not Calculated Properly")
         
@@ -86,8 +86,8 @@ class testParity(unittest.TestCase):
         '''
         Further test the algorithm with a few samples cases manually generated
         '''
-        parityBitOdd = Field.Field('odd')
-        parityBitEven = Field.Field('even')
+        parityBitOdd = Parity.Field('odd')
+        parityBitEven = Parity.Field('even')
         for case in self.cases:
             parityBitOdd.setData(case['word'])
             self.assertEqual(parityBitOdd.pack(),1<<31 if case['parity']=='even' else 0, "Parity Not Calculated Properly")
@@ -98,7 +98,7 @@ class testParity(unittest.TestCase):
         '''
         Further test the algorithm with a few samples cases manually generated
         '''
-        parityBit = Field.Field('odd')
+        parityBit = Parity.Field('odd')
         for case in self.cases:
             parityBit.setConvention('odd')
             parityBit.setData(case['word'])
@@ -110,12 +110,28 @@ class testParity(unittest.TestCase):
         '''
         Test the function that determine the message validity
         '''
-        parityBitOdd = Field.Field('odd')
-        parityBitEven = Field.Field('even')
+        parityBitOdd = Parity.Field('odd')
+        parityBitEven = Parity.Field('even')
         for case in self.cases:
             self.assertEqual(parityBitOdd.isMessageValid(case['word']),False if case['parity']=='even' else True, "Parity Not Calculated Properly")
             parityBitEven.setData(case['word'])
             self.assertEqual(parityBitEven.isMessageValid(case['word']),True if case['parity']=='even' else False, "Parity Not Calculated Properly")
+
+class comparison(unittest.TestCase):
+    '''
+    Verify Comparison operations
+    '''
+
+    def testEqual(self):
+        parityBitOdd = Parity.Field('odd')
+        parityBitEven = Parity.Field('even')
+        self.assertEqual(parityBitOdd,parityBitOdd,'Parity Field Comparison not working')
+        self.assertEqual(parityBitEven,parityBitEven,'Parity Field Comparison not working')
+
+    def testDifferent(self):
+        parityBitOdd = Parity.Field('odd')
+        parityBitEven = Parity.Field('even')
+        self.assertNotEqual(parityBitOdd,parityBitEven,'Parity Field Comparison not working')
 
 if __name__ == "__main__":
    

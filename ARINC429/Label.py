@@ -82,3 +82,24 @@ class Field(MessageField.Field):
         """ set the label given a 32 bit ARINC 429 message value """ 
         labelrev= MessageField.Field.unpack(self,A429word)
         self._label= int('{:08b}'.format(labelrev)[::-1], 2)
+
+    def __eq__(self, other):
+        '''
+        Define the == operator to compare field definition AND label
+        '''
+        if isinstance(other, Field):
+            return self.__dict__ == other.__dict__
+        else:
+            return NotImplemented
+
+    def __ne__(self, other):
+        '''
+        Define the != operator to compare field definition AND label
+        '''
+        result = self.__eq__(other)
+        '''
+        Define the != operator to compare size, lsb and name
+        '''
+        if result is NotImplemented:
+            return result
+        return not result

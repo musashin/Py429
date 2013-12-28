@@ -5,7 +5,7 @@ Created on 2013-11-16
 '''
 
 import Label
-import Field
+import Parity
 import Exception
 
 class Message(object):
@@ -25,7 +25,7 @@ class Message(object):
         self.fieldAdditionRules = (self.__field_overlaps,self.__field_name_already_exist)
          
         self.addField(Label.Field())
-        self.addField(Field.Field(parity))
+        self.addField(Parity.Field(parity))
 
     def __repr__(self):
 
@@ -45,7 +45,7 @@ class Message(object):
         '''
         Return True if the message contains a single parity field, False otherwise
         '''
-        return [isinstance(Field.Field,field) for field in self._fields].count(True)==1
+        return [isinstance(Parity.Field,field) for field in self._fields].count(True)==1
 
        
     def setLabel(self,label):

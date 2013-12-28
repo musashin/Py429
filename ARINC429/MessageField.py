@@ -86,7 +86,11 @@ class Field(object):
             return self.lsb == other.lsb and self.size == other.size and other.name == self.name
         else:
             return NotImplemented
+
     def __ne__(self, other):
+        '''
+        Define the != operator to compare size, lsb and name
+        '''
         result = self.__eq__(other)
         '''
         Define the != operator to compare size, lsb and name
