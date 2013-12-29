@@ -1,6 +1,7 @@
 import Exception
 import Message
 
+
 class Bus(object):
     '''
     Present a bus object, that is a collection of
@@ -68,3 +69,24 @@ class Bus(object):
                                                   do not exist in {}'.format(self._name),
                                                   label=label,
                                                   sdi=str(sdi))
+
+    def serialize(self, stream, parentElement = None):
+        '''
+        Serialize Bus to XML
+        '''
+
+        from xml.etree.ElementTree import Element, SubElement, Comment, ElementTree
+
+        if parentElement is None:
+            busElement = Element('A429Bus')
+        else:
+            busElement = SubElement(parentElement, 'head')
+
+        busElement.set('speed', self._speed)
+        busElement.set('name', self._name)
+
+        for message in self._messages.itervalues():
+            message.serialize(stream, busElement)
+
+        return busElement
+

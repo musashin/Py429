@@ -204,4 +204,21 @@ class Message(object):
                     field.unpack(word)
     
   
-        
+    def serialize(self, stream, parentElement = None):
+        '''
+        Serialize Message to XML
+        '''
+
+        from xml.etree.ElementTree import Element, SubElement, Comment, ElementTree
+
+        if parentElement is None:
+            messageElement = Element('Message')
+        else:
+            messageElement = SubElement(parentElement, 'Message')
+
+        messageElement.set('name',self.name)
+
+        for field in self._fields:
+            pass
+
+        return messageElement
