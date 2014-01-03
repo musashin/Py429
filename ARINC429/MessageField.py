@@ -98,4 +98,21 @@ class Field(object):
         if result is NotImplemented:
             return result
         return not result
-    
+
+    def serialize(self, stream, parentElement = None):
+        '''
+        Serialize Message to XML
+        '''
+
+        from xml.etree.ElementTree import Element, SubElement, Comment, ElementTree
+
+        if parentElement is None:
+            fieldElement = Element('Field')
+        else:
+            fieldElement = SubElement(parentElement, 'Field')
+
+        fieldElement.set('name',self.name)
+        fieldElement.set('lsb',str(self.lsb))
+        fieldElement.set('size',str(self.size))
+
+        return fieldElement

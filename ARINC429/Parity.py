@@ -147,3 +147,16 @@ class Field(MessageField.Field):
         if result is NotImplemented:
             return result
         return not result
+
+    def serialize(self, stream, parentElement = None):
+        '''
+        Serialize Field to XML
+        '''
+        from xml.etree.ElementTree import Element, SubElement, Comment, ElementTree
+
+        fieldElement = super(Field,self).serialize(stream,parentElement)
+
+        fieldElement.set('type',__name__)
+        fieldElement.set('convention', self._parityConvention)
+
+        return fieldElement

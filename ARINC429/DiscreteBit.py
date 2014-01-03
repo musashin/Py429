@@ -96,3 +96,17 @@ class Field(MessageField.Field):
         if result is NotImplemented:
             return result
         return not result
+
+    def serialize(self, stream, parentElement = None):
+        '''
+        Serialize field to XML
+        '''
+        from xml.etree.ElementTree import Element, SubElement, Comment, ElementTree
+
+        fieldElement = super(Field,self).serialize(stream,parentElement)
+
+        fieldElement.set('type',__name__)
+        fieldElement.set('meaningWhenSet', self._meaningWhenSet)
+        fieldElement.set('meaningWhenNotSet', self._meaningWhenNotSet)
+
+        return fieldElement

@@ -219,6 +219,6 @@ class Message(object):
         messageElement.set('name',self.name)
 
         for field in self._fields:
-            pass
+            field.serialize(stream, messageElement)
 
         return messageElement
