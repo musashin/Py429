@@ -18,10 +18,11 @@ class testSerialization(unittest.TestCase):
         testMessage1 = Message.Message('baseMessage', 'odd')
         testMessage1.setLabel('257')
         testMessage1.addField(DiscreteBit.Field(10,'testBit','test bit is happy','test bit is not happy'))
+        testMessage1.setFieldValueByName('testBit',True)
         testMessage1.addField(DiscreteBit.Field(15,'bobo','test bit is happy','test bit is not happy'))
 
         testBus.addMessage(testMessage1)
 
         with open("/home/nicolas/Desktop/test.xml", 'w') as XMLFile:
 
-            XMLSerializer.serialize(XMLFile,testBus)
+            XMLSerializer.serialize(XMLFile,testBus,True)

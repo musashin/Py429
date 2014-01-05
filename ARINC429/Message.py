@@ -204,7 +204,7 @@ class Message(object):
                     field.unpack(word)
     
   
-    def serialize(self, stream, parentElement = None):
+    def serialize(self, stream, serializeState = False , parentElement = None):
         '''
         Serialize Message to XML
         '''
@@ -219,6 +219,6 @@ class Message(object):
         messageElement.set('name',self.name)
 
         for field in self._fields:
-            field.serialize(stream, messageElement)
+            field.serialize(stream,serializeState, messageElement)
 
         return messageElement

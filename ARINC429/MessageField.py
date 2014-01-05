@@ -99,7 +99,7 @@ class Field(object):
             return result
         return not result
 
-    def serialize(self, stream, parentElement = None):
+    def serialize(self, stream, serializeState = False , parentElement = None):
         '''
         Serialize Message to XML
         '''

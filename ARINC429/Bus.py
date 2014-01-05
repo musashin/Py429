@@ -70,7 +70,7 @@ class Bus(object):
                                                   label=label,
                                                   sdi=str(sdi))
 
-    def serialize(self, stream, parentElement = None):
+    def serialize(self, stream, serializeState = False, parentElement = None):
         '''
         Serialize Bus to XML
         '''
@@ -86,7 +86,7 @@ class Bus(object):
         busElement.set('name', self._name)
 
         for message in self._messages.itervalues():
-            message.serialize(stream, busElement)
+            message.serialize(stream, serializeState, busElement)
 
         return busElement
 

@@ -102,13 +102,13 @@ class Field(MessageField.Field):
             return result
         return not result
 
-    def serialize(self, stream, parentElement = None):
+    def serialize(self, stream, serializeState = False ,  parentElement = None):
         '''
         Serialize Field to XML
         '''
         from xml.etree.ElementTree import Element, SubElement, Comment, ElementTree
 
-        fieldElement = super(Field,self).serialize(stream,parentElement)
+        fieldElement = super(Field,self).serialize(stream,serializeState,parentElement)
 
         fieldElement.set('type',__name__)
         fieldElement.set('label', oct(self._label))
